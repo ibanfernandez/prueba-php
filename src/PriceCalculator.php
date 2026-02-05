@@ -7,7 +7,7 @@ class PriceCalculator
         $total = 0;
 
         foreach ($order->getItems() as $item) {
-            $total += $item['price'] * 1;
+            $total += $item['price'] * $item['quantity'];
         }
 
         $discount = $order->getDiscountPercent();

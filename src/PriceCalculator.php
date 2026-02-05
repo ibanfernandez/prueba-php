@@ -4,15 +4,18 @@ class PriceCalculator
 {
     public function calculateTotal(Order $order): float
     {
-        $total = 0;
+        $subtotal = $order->getSubtotal();
+        $total = $subtotal;
 
-        foreach ($order->getItems() as $item) {
-            $total += $item['price'] * 1;
+        $baseDiscount = $order->getDiscountPercent();
+        $memberDiscount = $order->getMemberDiscountPercent();
+
+        if ($baseDiscount > 0) {
+            $total = $total - ($total * ($baseDiscount / 100));
         }
 
-        $discount = $order->getDiscountPercent();
-        if ($discount > 0) {
-            $total = $total - ($total * ($discount / 100));
+        if ($memberDiscount > 0) {
+            $total = $total - ($total * ($memberDiscount / 100));
         }
 
         return round($total, 2);

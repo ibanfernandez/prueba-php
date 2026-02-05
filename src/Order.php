@@ -26,9 +26,23 @@ class Order
         return $this->items;
     }
 
+    public function getSubtotal(): float
+    {
+        $subtotal = 0;
+        foreach ($this->items as $item) {
+            $subtotal += $item['price'] * $item['quantity'];
+        }
+        return $subtotal;
+    }
+
     public function getDiscountPercent(): float
     {
         return $this->discountPercent;
+    }
+
+    public function getMemberDiscountPercent(): float
+    {
+        return ($this->getSubtotal() > 100 && !$this->isGuest) ? 5 : 0;
     }
 
     public function isGuest(): bool
